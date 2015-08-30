@@ -18,24 +18,36 @@ import packages.xboard
 #print move
 #print score
 
-img_rgb = cv2.imread('all_pieces.png')
+img_rgb = cv2.imread('samples/all_pieces.png')
 img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
-def todoFunction():
-    template = cv2.imread('templates/black_knight.png',0)
+def getPositionsByTemplateMatching( filename, img ):
+    ret=[]
+    template = cv2.imread(filename,0)
     w, h = template.shape[::-1]
     
-    res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
-    threshold = 0.8
+    res = cv2.matchTemplate(img,template,cv2.TM_CCOEFF_NORMED)
+    threshold = 0.9
     loc = np.where( res >= threshold)
     for pt in zip(*loc[::-1]): 
-        cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
-    return
+        addPt = True
+        # check for similar points in close range
+        aktPt = (pt[0] + w/2, pt[1] + h/2)
+        
+        for chkPt in ret:
+            #print 'Checking point ' , aktPt[0], aktPt[1], ' against ', chkPt[0], chkPt[1], ': ', (chkPt[0]-aktPt[0])**2+(chkPt[1]-aktPt[1])**2
+            if (chkPt[0]-aktPt[0])**2+(chkPt[1]-aktPt[1])**2 < 25:
+                addPt = False
+                break
+        if addPt:
+            ret.append( aktPt )
+        #cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
+    return ret
 
 def getBoard( img ):
     ret,thresh = cv2.threshold(img,127,255,0)
     contours, _ = cv2.findContours(thresh,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
-    print 'Found %d contours' % (len(contours))
+    #print 'Found %d contours' % (len(contours))
     # find board
     max_area = 0
     best_cnt = None
@@ -50,7 +62,8 @@ def getBoard( img ):
 
 def transformCoordinatesToField( board, point ):
     return
-    
+
+print getPositionsByTemplateMatching('templates/black_pawn.png', img_gray)    
 
 img_rgb2=img_rgb.copy()
 x,y,w,h = getBoard(img_gray)
