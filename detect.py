@@ -48,6 +48,10 @@ def getBoard( img ):
     
     return cv2.boundingRect(best_cnt)
 
+def transformCoordinatesToField( board, point ):
+    return
+    
+
 img_rgb2=img_rgb.copy()
 x,y,w,h = getBoard(img_gray)
 cv2.rectangle(img_rgb2,(x,y),(x+w,y+h),(0,255,0),2)
