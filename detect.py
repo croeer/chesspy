@@ -11,14 +11,14 @@ import packages.sunfish as sunfish
 import packages.xboard as xboard
 #from matplotlib import pyplot as plt
 
-pos = xboard.parseFEN('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+#pos = xboard.parseFEN('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
 
-move, score = sunfish.search(pos)
+#move, score = sunfish.search(pos)
 
-print move, score
-print("My move:", sunfish.render(move[0]) + sunfish.render(move[1]))
-pos = pos.move(move)
-print(' '.join(pos.board))
+#print move, score
+#print("My move:", sunfish.render(move[0]) + sunfish.render(move[1]))
+#pos = pos.move(move)
+#print(' '.join(pos.board))
 
 
 img_rgb = cv2.imread('samples/all_pieces.png')
@@ -30,7 +30,7 @@ def getPositionsByTemplateMatching( filename, img ):
     w, h = template.shape[::-1]
     
     res = cv2.matchTemplate(img,template,cv2.TM_CCOEFF_NORMED)
-    threshold = 0.8
+    threshold = 0.8   
     loc = np.where( res >= threshold)
     for pt in zip(*loc[::-1]): 
         addPt = True
@@ -39,7 +39,7 @@ def getPositionsByTemplateMatching( filename, img ):
         
         for chkPt in ret:
             #print 'Checking point ' , aktPt[0], aktPt[1], ' against ', chkPt[0], chkPt[1], ': ', (chkPt[0]-aktPt[0])**2+(chkPt[1]-aktPt[1])**2
-            if (chkPt[0]-aktPt[0])**2+(chkPt[1]-aktPt[1])**2 < 25:
+            if (chkPt[0]-aktPt[0])**2+(chkPt[1]-aktPt[1])**2 < 100:
                 addPt = False
                 break
         if addPt:
@@ -63,24 +63,60 @@ def getBoard( img ):
     
     return cv2.boundingRect(best_cnt)
 
-def transformCoordinatesToField( board, point ):
+def transformCoordinatesToField( board, points ):
     binSizeX = board[2]//8
     binSizeY = board[3]//8
 
-    pointInBoardCoordinates = (point[0]-board[0],point[1]-board[1])
+    ret = []
     
-    binX = -(-pointInBoardCoordinates[0]//binSizeX)
-    binY = -(-pointInBoardCoordinates[1]//binSizeY)
+    for point in points:
+        pointInBoardCoordinates = (point[0]-board[0],point[1]-board[1])
         
-    return (chr(ord('a')+(binX-1)),chr(ord('1')+(9-binY-1)))
+        binX = -(-pointInBoardCoordinates[0]//binSizeX)
+        binY = -(-pointInBoardCoordinates[1]//binSizeY)
+     
+        ret.append((binX,9-binY))
+        #return (chr(ord('a')+(binX-1)),chr(ord('1')+(9-binY-1)))
+        #return chr(ord('a')+(binX-1)) + chr(ord('1')+(9-binY-1)) # human readable
+    return ret
 
-foundPieces = getPositionsByTemplateMatching('templates/white_bishop.png', img_gray)    
+def replaceFig( key, pieces, boardL ):
+    for p in pieces:
+        pos = 63+p[0]-8*p[1] #8*(p[1]-1)+p[0]-1
+        print key, p, pos
+        boardL[pos]=key
+    return
+    
+def setupBoard( board, img ):
+    whitePawns = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_pawn.png', img))
+    whiteRooks = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_rook.png', img))
+    whiteKnights = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_knight.png', img))
+    whiteBishops = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_bishop.png', img))
+    whiteKing = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_king.png', img))
+    whiteQueens = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_queen.png', img))
+    blackPawns = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_pawn.png', img))
+    blackRooks = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_rook.png', img))
+    blackKnights = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_knight.png', img))
+    blackBishops = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_bishop.png', img))
+    blackKing = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_king.png', img))
+    blackQueens = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_queen.png', img))
+    
+    boardL = [' ']*64
+    for k,v in {'P':whitePawns,'R':whiteRooks,'N':whiteKnights,'B':whiteBishops,'K':whiteKing,'Q':whiteQueens}.iteritems():
+        replaceFig(k,v,boardL)
+    
+    for k,v in {'p':blackPawns,'r':blackRooks,'n':blackKnights,'b':blackBishops,'k':blackKing,'q':blackQueens}.iteritems():
+        replaceFig(k,v,boardL)
+    
+    return "".join(boardL)
+
+
 
 img_rgb2=img_rgb.copy()
-x,y,w,h = getBoard(img_gray)
+b = getBoard(img_gray)
+print setupBoard(b, img_gray)
 
-for piece in foundPieces:
-    print transformCoordinatesToField((x,y,w,h), piece)
+#print transformCoordinatesToField(board, foundPieces)
 
 #cv2.rectangle(img_rgb2,(x,y),(x+w,y+h),(0,255,0),2)
 #cv2.imwrite('bb.png',img_rgb2)
