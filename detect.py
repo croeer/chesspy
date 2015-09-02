@@ -9,6 +9,7 @@ import cv2
 import numpy as np
 import packages.sunfish as sunfish
 import packages.xboard as xboard
+import re
 #from matplotlib import pyplot as plt
 
 #pos = xboard.parseFEN('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
@@ -21,7 +22,8 @@ import packages.xboard as xboard
 #print(' '.join(pos.board))
 
 
-img_rgb = cv2.imread('samples/all_pieces.png')
+#img_rgb = cv2.imread('samples/all_pieces.png')
+img_rgb = cv2.imread('samples/stellung.png')
 img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
 def getPositionsByTemplateMatching( filename, img ):
@@ -82,7 +84,7 @@ def transformCoordinatesToField( board, points ):
 
 def replaceFig( key, pieces, boardL ):
     for p in pieces:
-        pos = 63+p[0]-8*p[1] #8*(p[1]-1)+p[0]-1
+        pos = 63+p[0]-8*p[1]
         print key, p, pos
         boardL[pos]=key
     return
@@ -101,14 +103,23 @@ def setupBoard( board, img ):
     blackKing = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_king.png', img))
     blackQueens = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_queen.png', img))
     
-    boardL = [' ']*64
+    boardL = ['o']*64
     for k,v in {'P':whitePawns,'R':whiteRooks,'N':whiteKnights,'B':whiteBishops,'K':whiteKing,'Q':whiteQueens}.iteritems():
         replaceFig(k,v,boardL)
     
     for k,v in {'p':blackPawns,'r':blackRooks,'n':blackKnights,'b':blackBishops,'k':blackKing,'q':blackQueens}.iteritems():
         replaceFig(k,v,boardL)
     
-    return "".join(boardL)
+    stri = ''
+    for k in range(64):
+        stri = stri + boardL[k]
+        if (k+1) % 8 == 0 and k < 63:
+            stri = stri + '/'
+    for k in range(8,0,-1):
+        stri = stri.replace('o'*k, str(k))
+    return stri
+        
+    #return "".join(boardL)
 
 
 
