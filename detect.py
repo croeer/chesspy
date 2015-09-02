@@ -9,22 +9,6 @@ import cv2
 import numpy as np
 import packages.sunfish as sunfish
 import packages.xboard as xboard
-import re
-#from matplotlib import pyplot as plt
-
-#pos = xboard.parseFEN('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
-
-#move, score = sunfish.search(pos)
-
-#print move, score
-#print("My move:", sunfish.render(move[0]) + sunfish.render(move[1]))
-#pos = pos.move(move)
-#print(' '.join(pos.board))
-
-
-#img_rgb = cv2.imread('samples/all_pieces.png')
-img_rgb = cv2.imread('samples/stellung.png')
-img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
 def getPositionsByTemplateMatching( filename, img ):
     ret=[]
@@ -32,7 +16,7 @@ def getPositionsByTemplateMatching( filename, img ):
     w, h = template.shape[::-1]
     
     res = cv2.matchTemplate(img,template,cv2.TM_CCOEFF_NORMED)
-    threshold = 0.8   
+    threshold = 0.6
     loc = np.where( res >= threshold)
     for pt in zip(*loc[::-1]): 
         addPt = True
@@ -63,7 +47,13 @@ def getBoard( img ):
                 max_area = area
                 best_cnt = cnt
     
-    return cv2.boundingRect(best_cnt)
+    mask = np.zeros((img_gray.shape),np.uint8)
+    cv2.drawContours(mask,[best_cnt],0,255,-1)
+    cv2.drawContours(mask,[best_cnt],0,0,2)
+    res = cv2.bitwise_and(img,mask)
+    cv2.imwrite('detected.png',res)
+
+    return res, cv2.boundingRect(best_cnt)
 
 def transformCoordinatesToField( board, points ):
     binSizeX = board[2]//8
@@ -118,25 +108,22 @@ def setupBoard( board, img ):
     for k in range(8,0,-1):
         stri = stri.replace('o'*k, str(k))
     return stri
-        
-    #return "".join(boardL)
 
+#img_rgb = cv2.imread('samples/all_pieces.png')
+img_rgb = cv2.imread('samples/stellung2.png')
+img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
+img_masked,b = getBoard(img_gray)
+fen = setupBoard(b, img_masked)
 
-img_rgb2=img_rgb.copy()
-b = getBoard(img_gray)
-print setupBoard(b, img_gray)
+color = 'w'
+rochade = '-' # 'KQkq'
+pos = xboard.parseFEN(fen + ' ' + color + ' ' + rochade + ' - 0 1')
+print "Detected board:"
+print(' '.join(pos.board))
 
-#print transformCoordinatesToField(board, foundPieces)
-
-#cv2.rectangle(img_rgb2,(x,y),(x+w,y+h),(0,255,0),2)
-#cv2.imwrite('bb.png',img_rgb2)
-
-#img_cont=img_rgb.copy()
-#cv2.drawContours(img_cont, [best_cnt], 0, (0,255,0), 3)
-
-#img = cv2.drawContours(img_gray, contours, -1, (0,255,0), 3)
-#cv2.imwrite('cont.png',img_cont)
-#cv2.imshow('Image', img_rgb)
-#cv2.waitKey(0)
-
+move, score = sunfish.search(pos)
+move = move if color == 'w' else (119-move[0], 119-move[1])
+print "Suggested move:", sunfish.render(move[0]) + sunfish.render(move[1])
+#pos = pos.move(move)
+#print(' '.join(pos.board))
