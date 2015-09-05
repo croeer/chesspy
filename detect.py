@@ -51,7 +51,7 @@ def getBoard( img ):
     cv2.drawContours(mask,[best_cnt],0,255,-1)
     cv2.drawContours(mask,[best_cnt],0,0,2)
     res = cv2.bitwise_and(img,mask)
-    cv2.imwrite('detected.png',res)
+    #cv2.imwrite('detected.png',res)
 
     return res, cv2.boundingRect(best_cnt)
 
@@ -72,10 +72,19 @@ def transformCoordinatesToField( board, points ):
         #return chr(ord('a')+(binX-1)) + chr(ord('1')+(9-binY-1)) # human readable
     return ret
 
+def pointInGlobalCoordinates( board, field ):
+    p0,p1 = (board[0],board[1])
+    rank, fil = divmod(field - sunfish.A1, 10)
+    binSizeX = board[2]//8
+    binSizeY = board[3]//8
+    p0 = p0 + binSizeX*fil + binSizeX/2
+    p1 = p1 + binSizeY*(8+rank-1) + binSizeY/2
+    return (p0,p1) 
+
 def replaceFig( key, pieces, boardL ):
     for p in pieces:
         pos = 63+p[0]-8*p[1]
-        print key, p, pos
+        #print key, p, pos
         boardL[pos]=key
     return
     
@@ -119,11 +128,13 @@ fen = setupBoard(b, img_masked)
 color = 'w'
 rochade = '-' # 'KQkq'
 pos = xboard.parseFEN(fen + ' ' + color + ' ' + rochade + ' - 0 1')
-print "Detected board:"
+print "Detected board: (" + color + ')'
 print(' '.join(pos.board))
 
 move, score = sunfish.search(pos)
 move = move if color == 'w' else (119-move[0], 119-move[1])
 print "Suggested move:", sunfish.render(move[0]) + sunfish.render(move[1])
-#pos = pos.move(move)
-#print(' '.join(pos.board))
+
+# draw arrow for suggested move
+cv2.arrowedLine(img_rgb,pointInGlobalCoordinates(b,move[0]),pointInGlobalCoordinates(b,move[1]),(0,0,255),5)
+cv2.imwrite('output.png', img_rgb)
