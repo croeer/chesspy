@@ -6,14 +6,36 @@ Created on Sun Sep  6 20:53:59 2015
 """
 
 import unittest
+import cv2
 from functions import *
 
-def fun(x):
-    return x + 1
-
-class MyTest(unittest.TestCase):
-    def test(self):
-        self.assertEqual(fun(3), 4)
+class StellungenTest(unittest.TestCase):
+    def test_stellung1(self):
+        img_rgb = cv2.imread('samples/stellung1.png')
+        img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
         
+        img_masked,b = getBoard(img_gray)
+        fen = setupBoard(b, img_masked)
+
+        self.assertEqual(fen, '5k2/4rpbQ/pq4p1/3p2P1/2pP1BP1/2P2PK1/P7/4R3')
+
+    def test_stellung2(self):
+        img_rgb = cv2.imread('samples/stellung2.png')
+        img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+        
+        img_masked,b = getBoard(img_gray)
+        fen = setupBoard(b, img_masked)
+
+        self.assertEqual(fen, '7k/2q1bQ2/4npP1/1p2p3/4P1b1/2Pp4/5PP1/3R2K1')
+
+    def test_beginn_stellung(self):
+        img_rgb = cv2.imread('samples/all_pieces.png')
+        img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+        
+        img_masked,b = getBoard(img_gray)
+        fen = setupBoard(b, img_masked)
+
+        self.assertEqual(fen, 'rnbkqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBKQBNR')
+
 if __name__ == '__main__':
     unittest.main()

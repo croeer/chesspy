@@ -17,7 +17,7 @@ def getPositionsByTemplateMatching( filename, img ):
     w, h = template.shape[::-1]
     
     res = cv2.matchTemplate(img,template,cv2.TM_CCOEFF_NORMED)
-    threshold = 0.5
+    threshold = 0.8
     loc = np.where( res >= threshold)
     for pt in zip(*loc[::-1]): 
         addPt = True
