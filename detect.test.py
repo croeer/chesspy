@@ -28,6 +28,24 @@ class StellungenTest(unittest.TestCase):
 
         self.assertEqual(fen, '7k/2q1bQ2/4npP1/1p2p3/4P1b1/2Pp4/5PP1/3R2K1')
 
+    def test_stellung3(self):
+        img_rgb = cv2.imread('samples/stellung3.png')
+        img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+        
+        img_masked,b = getBoard(img_gray)
+        fen = setupBoard(b, img_masked)
+
+        self.assertEqual(fen, '1rb1nrk1/2q2p1p/p1p3p1/2QNP3/P7/6P1/1PP2P1P/3RR1K1')
+
+    def test_stellung4(self):
+        img_rgb = cv2.imread('samples/stellung4.png')
+        img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+        
+        img_masked,b = getBoard(img_gray)
+        fen = setupBoard(b, img_masked)
+
+        self.assertEqual(fen, '7R/8/r6p/5Kpk/8/8/3r4/6R1')
+        
     def test_beginn_stellung(self):
         img_rgb = cv2.imread('samples/all_pieces.png')
         img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
