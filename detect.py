@@ -121,6 +121,8 @@ def setupBoard( board, img ):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('file', help='png image filename to parse')
+parser.add_argument('color', help='color to move, "w" or "b"', choices=['w','b'])
+
 args = parser.parse_args()
 
 print "Parsing file " + args.file
@@ -131,7 +133,7 @@ img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 img_masked,b = getBoard(img_gray)
 fen = setupBoard(b, img_masked)
 
-color = 'w'
+color = args.color
 rochade = '-' # 'KQkq'
 pos = xboard.parseFEN(fen + ' ' + color + ' ' + rochade + ' - 0 1')
 print "Detected board: (" + color + ')'
