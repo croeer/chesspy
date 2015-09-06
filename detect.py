@@ -9,6 +9,7 @@ import cv2
 import numpy as np
 import packages.sunfish as sunfish
 import packages.xboard as xboard
+import argparse
 
 def getPositionsByTemplateMatching( filename, img ):
     ret=[]
@@ -118,8 +119,13 @@ def setupBoard( board, img ):
         stri = stri.replace('o'*k, str(k))
     return stri
 
+parser = argparse.ArgumentParser()
+parser.add_argument('file', help='png image filename to parse')
+args = parser.parse_args()
+
+print "Parsing file " + args.file
 #img_rgb = cv2.imread('samples/all_pieces.png')
-img_rgb = cv2.imread('samples/stellung2.png')
+img_rgb = cv2.imread(args.file)
 img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
 img_masked,b = getBoard(img_gray)
