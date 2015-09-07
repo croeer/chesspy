@@ -7,6 +7,7 @@ Created on Sun Sep  6 20:53:59 2015
 
 import unittest
 import cv2
+import imutils
 from functions import *
 
 class StellungenTest(unittest.TestCase):

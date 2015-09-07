@@ -6,6 +6,7 @@ Created on Sat Aug 29 18:50:46 2015
 """
 import argparse
 from functions import *
+import packages.xboard as xboard
 
 parser = argparse.ArgumentParser()
 parser.add_argument('file', help='png image filename to parse')
