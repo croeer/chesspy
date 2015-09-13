@@ -48,7 +48,7 @@ class StellungenTest(unittest.TestCase):
         self.assertEqual(fen, '7R/8/r6p/5Kpk/8/8/3r4/6R1')
         
     def test_beginn_stellung(self):
-        img_rgb = cv2.imread('samples/all_pieces.png')
+        img_rgb = cv2.imread('samples/all_pieces2.png')
         img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
         
         img_masked,b = getBoard(img_gray)
