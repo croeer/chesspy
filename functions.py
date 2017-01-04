@@ -40,7 +40,7 @@ def getPositionsByTemplateMatching( filename, img, threshold ):
 
         cv2.rectangle(boximg, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
     
-    cv2.imwrite(filename + '.png', boximg)
+    #cv2.imwrite(filename + '.png', boximg)
 
     return scalefactor, ret
 
