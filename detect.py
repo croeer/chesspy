@@ -20,7 +20,10 @@ img_rgb = cv2.imread(args.file)
 img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
 img_masked,b = getBoard(img_gray)
-fen = setupBoard(b, img_masked)
+img_board = img_gray[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
+cv2.imwrite('outboard.png', img_board)
+
+fen = setupBoard(b, img_board)
 
 color = args.color
 rochade = '-' # 'KQkq'

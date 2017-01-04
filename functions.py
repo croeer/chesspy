@@ -11,13 +11,14 @@ import numpy as np
 import packages.sunfish as sunfish
 import packages.xboard as xboard
 
-def getPositionsByTemplateMatching( filename, img ):
+def getPositionsByTemplateMatching( filename, img, threshold ):
     ret=[]
     template = cv2.imread(filename,0)
     w, h = template.shape[::-1]
     
+    boximg = np.copy(img)
     res = cv2.matchTemplate(img,template,cv2.TM_CCOEFF_NORMED)
-    threshold = 0.8
+    #threshold = 0.4
     loc = np.where( res >= threshold)
     for pt in zip(*loc[::-1]): 
         addPt = True
@@ -31,7 +32,11 @@ def getPositionsByTemplateMatching( filename, img ):
                 break
         if addPt:
             ret.append( aktPt )
-        #cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
+
+        cv2.rectangle(boximg, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
+    
+    cv2.imwrite(filename + '.png', boximg)
+
     return ret
 
 def getBoard( img ):
@@ -57,20 +62,24 @@ def getBoard( img ):
     return res, cv2.boundingRect(best_cnt)
 
 def transformCoordinatesToField( board, points ):
+    #print "transforming", points
     binSizeX = board[2]//8
     binSizeY = board[3]//8
+    #print binSizeX, binSizeY
 
     ret = []
     
     for point in points:
-        pointInBoardCoordinates = (point[0]-board[0],point[1]-board[1])
-        
+        #print "point", point
+        pointInBoardCoordinates = point #(point[0]-board[0],point[1]-board[1])
+        #print "maps to", pointInBoardCoordinates
+
         binX = -(-pointInBoardCoordinates[0]//binSizeX)
         binY = -(-pointInBoardCoordinates[1]//binSizeY)
-     
+        #print binX, binY
         ret.append((binX,9-binY))
         #return (chr(ord('a')+(binX-1)),chr(ord('1')+(9-binY-1)))
-        #return chr(ord('a')+(binX-1)) + chr(ord('1')+(9-binY-1)) # human readable
+        #print chr(ord('a')+(binX-1)) + chr(ord('1')+(9-binY-1)) # human readable
     return ret
 
 def pointInGlobalCoordinates( board, field ):
@@ -90,19 +99,19 @@ def replaceFig( key, pieces, boardL ):
     return
     
 def setupBoard( board, img ):
-    whitePawns = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_pawn.png', img))
-    whiteRooks = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_rook.png', img))
-    whiteKnights = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_knight.png', img))
-    whiteBishops = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_bishop.png', img))
-    whiteKing = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_king.png', img))
-    whiteQueens = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_queen.png', img))
-    blackPawns = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_pawn.png', img))
-    blackRooks = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_rook.png', img))
-    blackKnights = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_knight.png', img))
-    blackBishops = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_bishop.png', img))
-    blackKing = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_king.png', img))
-    blackQueens = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_queen.png', img))
-    
+    whitePawns = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_pawn.png', img, 0.4))
+    whiteRooks = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_rook.png', img, 0.6))
+    whiteKnights = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_knight.png', img, 0.6))
+    whiteBishops = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_bishop.png', img, 0.5))
+    whiteKing = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_king.png', img, 0.6))
+    whiteQueens = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/white_queen.png', img, 0.6))
+    blackPawns = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_pawn.png', img, 0.8))
+    blackRooks = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_rook.png', img, 0.6))
+    blackKnights = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_knight.png', img, 0.6))
+    blackBishops = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_bishop.png', img, 0.6))
+    blackKing = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_king.png', img, 0.6))
+    blackQueens = transformCoordinatesToField(board, getPositionsByTemplateMatching('templates/black_queen.png', img, 0.6))
+
     boardL = ['o']*64
     for k,v in {'P':whitePawns,'R':whiteRooks,'N':whiteKnights,'B':whiteBishops,'K':whiteKing,'Q':whiteQueens}.iteritems():
         replaceFig(k,v,boardL)
