@@ -40,7 +40,7 @@ def getPositionsByTemplateMatching( filename, img, threshold ):
 
         cv2.rectangle(boximg, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
     
-    #cv2.imwrite(filename + '.png', boximg)
+    cv2.imwrite(filename + '.png', boximg)
 
     return scalefactor, ret
 
@@ -115,7 +115,7 @@ def setupBoard( board, img ):
     whiteBishops = transformCoordinatesToField(board, f, wb)
     f, wkg = getPositionsByTemplateMatching('templates/white_king.png', img, 0.6)
     whiteKing = transformCoordinatesToField(board, f, wkg)
-    f, wq = getPositionsByTemplateMatching('templates/white_queen.png', img, 0.6)
+    f, wq = getPositionsByTemplateMatching('templates/white_queen.png', img, 0.5)
     whiteQueens = transformCoordinatesToField(board, f, wq)
 
     f, bp = getPositionsByTemplateMatching('templates/black_pawn.png', img, 0.8)
