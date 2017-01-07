@@ -18,7 +18,7 @@ class StellungenTest(unittest.TestCase):
         img_masked,b = getBoard(img_gray)
         img_board = img_gray[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
 
-        fen = setupBoard(b, img_board)
+        fen, _ = setupBoard(b, img_board)
 
         self.assertEqual(fen, '5k2/4rpbQ/pq4p1/3p2P1/2pP1BP1/2P2PK1/P7/4R3')
 
@@ -29,7 +29,7 @@ class StellungenTest(unittest.TestCase):
         img_masked,b = getBoard(img_gray)
         img_board = img_gray[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
 
-        fen = setupBoard(b, img_board)
+        fen, _ = setupBoard(b, img_board)
 
         self.assertEqual(fen, '7k/2q1bQ2/4npP1/1p2p3/4P1b1/2Pp4/5PP1/3R2K1')
 
@@ -40,7 +40,7 @@ class StellungenTest(unittest.TestCase):
         img_masked,b = getBoard(img_gray)
         img_board = img_gray[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
 
-        fen = setupBoard(b, img_board)
+        fen, _ = setupBoard(b, img_board)
 
         self.assertEqual(fen, '1rb1nrk1/2q2p1p/p1p3p1/2QNP3/P7/6P1/1PP2P1P/3RR1K1')
 
@@ -51,7 +51,7 @@ class StellungenTest(unittest.TestCase):
         img_masked,b = getBoard(img_gray)
         img_board = img_gray[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
 
-        fen = setupBoard(b, img_board)
+        fen, _ = setupBoard(b, img_board)
 
         self.assertEqual(fen, '7R/8/r6p/5Kpk/8/8/3r4/6R1')
 
@@ -62,7 +62,7 @@ class StellungenTest(unittest.TestCase):
         img_masked,b = getBoard(img_gray)
         img_board = img_gray[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
 
-        fen = setupBoard(b, img_board)
+        fen, _ = setupBoard(b, img_board)
 
         self.assertEqual(fen, '8/8/Pk1b4/1P6/2K5/6R1/8/3r4')
 
@@ -73,7 +73,7 @@ class StellungenTest(unittest.TestCase):
         img_masked,b = getBoard(img_gray)
         img_board = img_gray[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
 
-        fen = setupBoard(b, img_board)
+        fen, _ = setupBoard(b, img_board)
 
         self.assertEqual(fen, '7k/1p2Q1p1/4Bn2/3p2q1/P2Pp2p/2N1P3/5K1P/8')
 
@@ -84,7 +84,7 @@ class StellungenTest(unittest.TestCase):
         img_masked,b = getBoard(img_gray)
         img_board = img_gray[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
 
-        fen = setupBoard(b, img_board)
+        fen, _ = setupBoard(b, img_board)
 
         self.assertEqual(fen, '7k/1p2Q1p1/8/3p2q1/P2Pp1Bp/2N1P3/5K1P/8')
 
@@ -95,7 +95,7 @@ class StellungenTest(unittest.TestCase):
         img_masked,b = getBoard(img_gray)
         img_board = img_gray[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
 
-        fen = setupBoard(b, img_board)
+        fen, _ = setupBoard(b, img_board)
 
         self.assertEqual(fen, 'r5rk/pp2p2p/3pqnQ1/8/4P3/2N2P2/PPP3P1/2KR3R')
                         
@@ -106,7 +106,7 @@ class StellungenTest(unittest.TestCase):
         img_masked,b = getBoard(img_gray)
         img_board = img_gray[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
 
-        fen = setupBoard(b, img_board)
+        fen, _ = setupBoard(b, img_board)
 
         self.assertEqual(fen, 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
 

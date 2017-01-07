@@ -24,18 +24,23 @@ def getTargetField( img_board ):
 
     return res, cv2.boundingRect(best_cnt)
 
+def detectTargetField( img_rgb):
+    lower = np.array([250, 120, 80], dtype="uint8")
+    upper = np.array([255, 130, 90], dtype="uint8")
 
-img = cv2.imread("outboard.png")
+    mask = cv2.inRange(img_rgb, lower, upper)
+    output = cv2.bitwise_and(img_rgb, img_rgb, mask = mask)
 
-lower = np.array([250, 120, 80], dtype="uint8")
-upper = np.array([255, 130, 90], dtype="uint8")
+    return getTargetField( output )
 
-mask = cv2.inRange(img, lower, upper)
-output = cv2.bitwise_and(img, img, mask = mask)
+if __name__ == '__main__':
+    img = cv2.imread("outboard.png")
+    #output = detectTargetField( img )
+    #img_masked,b = getTargetField( output )
 
-img_masked,b = getTargetField( output )
+    img_masked,b = detectTargetField( img )
 
-print b
-img_field = img[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
-cv2.imshow("detected target field", img_field)
-cv2.waitKey(0)
+    print b
+    img_field = img[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
+    cv2.imshow("detected target field", img_field)
+    cv2.waitKey(0)

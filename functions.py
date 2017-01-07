@@ -67,7 +67,7 @@ def getBoard( img ):
     return res, cv2.boundingRect(best_cnt)
 
 def transformCoordinatesToField( board, scalefactor, points ):
-    #print "transforming", points
+    #print "transforming", points, scalefactor
     binSizeX = board[2]//8
     binSizeY = board[3]//8
     #print binSizeX, binSizeY
@@ -76,6 +76,7 @@ def transformCoordinatesToField( board, scalefactor, points ):
     
     for point in points:
         #print "point", point
+
         pointInBoardCoordinates = [(int)(x*scalefactor) for x in point] #(point[0]-board[0],point[1]-board[1])
         #print "maps to", pointInBoardCoordinates
 
@@ -138,11 +139,13 @@ def setupBoard( board, img ):
     for k,v in {'p':blackPawns,'r':blackRooks,'n':blackKnights,'b':blackBishops,'k':blackKing,'q':blackQueens}.iteritems():
         replaceFig(k,v,boardL)
     
-    stri = ''
+    
+    fen = ''
     for k in range(64):
-        stri = stri + boardL[k]
+        fen = fen + boardL[k]
         if (k+1) % 8 == 0 and k < 63:
-            stri = stri + '/'
+            fen = fen + '/'
     for k in range(8,0,-1):
-        stri = stri.replace('o'*k, str(k))
-    return stri
+        fen = fen.replace('o'*k, str(k))
+        
+    return fen, boardL
