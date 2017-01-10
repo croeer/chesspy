@@ -56,7 +56,11 @@ def parsePngFile(file, color):
 	# draw arrow for suggested move
 	cv2.arrowedLine(img_rgb,pointInGlobalCoordinates(b,move[0]),pointInGlobalCoordinates(b,move[1]),(0,0,255),5)
 	cv2.imwrite('output.png', img_rgb)
-	cv2.imshow("Suggested move", img_rgb)
+	
+	cv2.arrowedLine(img_board_color,pointInGlobalCoordinates(b,move[0]),pointInGlobalCoordinates(b,move[1]),(0,0,255),5)
+	img_board_color_scaled = imutils.resize(img_board_color, width = 200)
+	cv2.imwrite('outputboard.png', img_board_color_scaled)
+	cv2.imshow("Suggested move", img_board_color_scaled)
 	cv2.waitKey(0)
 	
 if __name__ == '__main__':
