@@ -7,7 +7,7 @@ Created on Sat Aug 29 18:50:46 2015
 import argparse
 from functions import *
 from color import *
-import packages.xboard as xboard
+import sunfish.tools as tools
 import imutils
 
 def parsePngFile(file, color):
@@ -34,7 +34,7 @@ def parsePngFile(file, color):
 		#print center
 		lastMove = transformCoordinatesToField(b, 1.0, [center])[0]
 		#print "last move", lastMove
-		pos = xboard.parseFEN(fen + ' w ' + rochade + ' - 0 1')
+		pos = tools.parseFEN(fen + ' w ' + rochade + ' - 0 1')
 		index = (8-lastMove[1])*8+lastMove[0]-1
 		#print "index", index
 		target = boardArr[index]
@@ -45,11 +45,12 @@ def parsePngFile(file, color):
 			color = 'w'
 		#print "color", color
 
-	pos = xboard.parseFEN(fen + ' ' + color + ' ' + rochade + ' - 0 1')
+	pos = tools.parseFEN(fen + ' ' + color + ' ' + rochade + ' - 0 1')
 	print "Detected board: (" + color + ')'
 	print(' '.join(pos.board))
 
-	move, score = sunfish.search(pos)
+	searcher = sunfish.Searcher()
+	move, score = searcher.search(pos, secs=5)
 	move = move if color == 'w' else (119-move[0], 119-move[1])
 	print "Suggested move (score):", sunfish.render(move[0]) + sunfish.render(move[1]), score
 

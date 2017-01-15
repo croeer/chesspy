@@ -6,8 +6,7 @@ Created on Sun Sep  6 21:00:17 2015
 """
 import cv2
 import numpy as np
-import packages.sunfish as sunfish
-import packages.xboard as xboard
+from sunfish import sunfish
 import imutils
 
 def getPositionsByTemplateMatching( filename, img, threshold ):
