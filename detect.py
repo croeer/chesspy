@@ -7,7 +7,7 @@ Created on Sat Aug 29 18:50:46 2015
 import argparse
 from functions import *
 from color import *
-import sunfish.tools as tools
+import packages.tools as tools
 import imutils
 
 def parsePngFile(file, color):

@@ -6,7 +6,7 @@ Created on Sun Sep  6 21:00:17 2015
 """
 import cv2
 import numpy as np
-from sunfish import sunfish
+from packages import sunfish
 import imutils
 
 def getPositionsByTemplateMatching( filename, img, threshold ):
