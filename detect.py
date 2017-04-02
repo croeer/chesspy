@@ -19,13 +19,9 @@ def parsePngFile(file, color):
 	img_masked,b = getBoard(img_gray)
 	img_board = img_gray[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
 	img_board_color = img_rgb[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
-	_, f = detectTargetField( img_board_color )
 
-	img_field_color = img_board_color[ f[1]:f[1]+f[3] , f[0]:f[0]+f[2] ]
-	
 	if (config.verbosity):	
 		cv2.imwrite('outboard.png', img_board_color)
-		cv2.imwrite('outfield.png', img_field_color)
 
 	fen, boardArr = setupBoard(b, img_board)
 	print "FEN", fen
@@ -33,6 +29,11 @@ def parsePngFile(file, color):
 
 	if color is None:
 		# Try to detect color of last move. f contains the target field of enemys last move
+		_, f = detectTargetField( img_board_color )
+		img_field_color = img_board_color[ f[1]:f[1]+f[3] , f[0]:f[0]+f[2] ]
+		if (config.verbosity):	
+			cv2.imwrite('outfield.png', img_field_color)
+
 		center = (f[0]+f[2]/2, f[1]+f[3]/2)
 		#print center
 		lastMove = transformCoordinatesToField(b, 1.0, [center])[0]
