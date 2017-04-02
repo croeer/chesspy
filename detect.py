@@ -10,7 +10,7 @@ from color import *
 import packages.tools as tools
 import imutils
 
-def parsePngFile(file, color):
+def parsePngFile(file, color, t):
 	print "Parsing file", file, color
 	img_rgb = cv2.imread(file)
 	img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
@@ -50,7 +50,7 @@ def parsePngFile(file, color):
 	print(' '.join(pos.board))
 
 	searcher = sunfish.Searcher()
-	move, score = searcher.search(pos, secs=5)
+	move, score = searcher.search(pos, secs=t)
 	move = move if color == 'w' else (119-move[0], 119-move[1])
 	print "Suggested move (score):", sunfish.render(move[0]) + sunfish.render(move[1]), score
 
@@ -68,6 +68,7 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('file', help='png image filename to parse')
 	parser.add_argument('-color', help='color to move, "w" or "b"', required=False, choices=['w','b'])
+	parser.add_argument('-t', '--time', help='sunfish thinking time, default=5', required=False, type=int, default=5)
 
 	args = parser.parse_args()
-	parsePngFile(args.file, args.color)
+	parsePngFile(args.file, args.color, args.time)
