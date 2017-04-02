@@ -85,4 +85,4 @@ if __name__ == '__main__':
 	config.verbosity = args.verbose
 	config.show_move = args.show_move
 	config.time = args.time
-	parsePngFile(args.file, args.color, config.time)
+	parsePngFile(args.file, args.color)
