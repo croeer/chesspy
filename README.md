@@ -5,11 +5,11 @@ Detect chess pieces on chesstempo boards using opencv in python.
 todo
 
 ## Example
-Take the screenshot ![Example screenshot](/samples/stellung3.png?raw=true "Example Screenshot" =100x)
+Take the screenshot ![Example screenshot](/samples/stellung3.png?raw=true "Example Screenshot")
 
 After template matching the detected board is passed to sunfish, which calculates the optimal move and prints it in the original picture:
-![Example screenshot](/screenshots/image.png?raw=true "Example Screenshot" =100x)
-![Example screenshot](/screenshots/output.png?raw=true "Example Screenshot" =100x)
+![Example screenshot](/screenshots/image.png?raw=true "Example Screenshot")
+![Example screenshot](/screenshots/output.png?raw=true "Example Screenshot")
 
 ## Dependencies
 
