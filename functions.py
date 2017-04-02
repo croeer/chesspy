@@ -8,9 +8,11 @@ import cv2
 import numpy as np
 from packages import sunfish
 import imutils
+import config
 
 def getPositionsByTemplateMatching( filename, img, threshold ):
-    #print "matching", filename
+    if (config.verbosity):
+        print "matching", filename
     ret=[]
     template = cv2.imread(filename,0)
     w, h = template.shape[::-1]
@@ -39,7 +41,8 @@ def getPositionsByTemplateMatching( filename, img, threshold ):
 
         cv2.rectangle(boximg, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
     
-    cv2.imwrite(filename + '.png', boximg)
+    if (config.verbosity):
+        cv2.imwrite(filename + '.png', boximg)
 
     return scalefactor, ret
 
@@ -61,7 +64,9 @@ def getBoard( img ):
     cv2.drawContours(mask,[best_cnt],0,255,-1)
     cv2.drawContours(mask,[best_cnt],0,0,2)
     res = cv2.bitwise_and(img,mask)
-    #cv2.imwrite('detected.png',res)
+    
+    if (config.verbosity):
+        cv2.imwrite('detected.png',res)
 
     return res, cv2.boundingRect(best_cnt)
 

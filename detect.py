@@ -9,6 +9,7 @@ from functions import *
 from color import *
 import packages.tools as tools
 import imutils
+import config
 
 def parsePngFile(file, color, t):
 	print "Parsing file", file, color
@@ -19,10 +20,12 @@ def parsePngFile(file, color, t):
 	img_board = img_gray[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
 	img_board_color = img_rgb[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
 	_, f = detectTargetField( img_board_color )
-	#print "board, field", b, f
+
 	img_field_color = img_board_color[ f[1]:f[1]+f[3] , f[0]:f[0]+f[2] ]
-	#cv2.imwrite('outboard.png', img_board_color)
-	#cv2.imwrite('outfield.png', img_field_color)
+	
+	if (config.verbosity):	
+		cv2.imwrite('outboard.png', img_board_color)
+		cv2.imwrite('outfield.png', img_field_color)
 
 	fen, boardArr = setupBoard(b, img_board)
 	print "FEN", fen
@@ -60,15 +63,25 @@ def parsePngFile(file, color, t):
 	
 	cv2.arrowedLine(img_board_color,pointInGlobalCoordinates(b,move[0]),pointInGlobalCoordinates(b,move[1]),(0,0,255),5)
 	img_board_color_scaled = imutils.resize(img_board_color, width = 200)
-	cv2.imwrite('outputboard.png', img_board_color_scaled)
-	cv2.imshow("Suggested move", img_board_color_scaled)
-	cv2.waitKey(0)
+	
+	if (config.verbosity):	
+		cv2.imwrite('outputboard.png', img_board_color_scaled)
+
+	if (config.show_move):
+		cv2.imshow("Suggested move", img_board_color_scaled)
+		cv2.waitKey(0)
 	
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('file', help='png image filename to parse')
-	parser.add_argument('-color', help='color to move, "w" or "b"', required=False, choices=['w','b'])
+	parser.add_argument('-color', help='color to move, "w" or "b" (color is autodetected if omitted)', required=False, choices=['w','b'])
 	parser.add_argument('-t', '--time', help='sunfish thinking time, default=5', required=False, type=int, default=5)
-
+	parser.add_argument('-v','--verbose', help='increase output verbosity and saving of status images', action='store_true')
+	parser.add_argument('--show_move', dest='show_move', help='show best move window (default)', action='store_true')
+	parser.add_argument('--hide_move', dest='show_move', help='hide best move window', action='store_false')
+	parser.set_defaults(show_move=True)	
+	
 	args = parser.parse_args()
+	config.verbosity = args.verbose
+	config.show_move = args.show_move
 	parsePngFile(args.file, args.color, args.time)
