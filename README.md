@@ -3,9 +3,10 @@ Detect chess pieces on chesstempo boards using opencv in python.
 
 ## Usage
 ```
-python detect.py -h
+>python detect.py -h
 usage: detect.py [-h] [-color {w,b}] [-t TIME] [-v] [--show_move]
                  [--hide_move]
+                 [--castle {KQkq,Kkq,Qkq,kq,KQk,Kk,Qk,k,KQq,Kq,Qq,q,K,Q,KQ,-}]
                  file
 
 positional arguments:
@@ -15,10 +16,13 @@ optional arguments:
   -h, --help            show this help message and exit
   -color {w,b}          color to move, "w" or "b" (color is autodetected if
                         omitted)
-  -t TIME, --time TIME  sunfish thinking time (in seconds), default = 5
+  -t TIME, --time TIME  sunfish thinking time, default=5
   -v, --verbose         increase output verbosity and saving of status images
   --show_move           show best move window (default)
   --hide_move           hide best move window
+  --castle {KQkq,Kkq,Qkq,kq,KQk,Kk,Qk,k,KQq,Kq,Qq,q,K,Q,-}
+                        castling possibilities (default: -)
+
 ```
 
 Or use the provided `screenshot.py` script to grab a screenshot and immediately start analyzing it:

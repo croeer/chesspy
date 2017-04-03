@@ -80,7 +80,7 @@ if __name__ == '__main__':
 	parser.add_argument('-v','--verbose', help='increase output verbosity and saving of status images', action='store_true')
 	parser.add_argument('--show_move', dest='show_move', help='show best move window (default)', action='store_true')
 	parser.add_argument('--hide_move', dest='show_move', help='hide best move window', action='store_false')
-	parser.add_argument('--castle', help='castling possibilities (default: -)', required=False, choices=['KQkq','Kkq','Qkq','kq','KQk','Kk','Qk','k','KQq','Kq','Qq','q','-'], default='-')
+	parser.add_argument('--castle', help='castling possibilities (default: -)', required=False, choices=['KQkq','Kkq','Qkq','kq','KQk','Kk','Qk','k','KQq','Kq','Qq','q','K','Q','KQ','-'], default='-')
 	parser.set_defaults(show_move=True)	
 	
 	args = parser.parse_args()
