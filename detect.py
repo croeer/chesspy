@@ -24,8 +24,7 @@ def parsePngFile(file, color):
 		cv2.imwrite('outboard.png', img_board_color)
 
 	fen, boardArr = setupBoard(b, img_board)
-	print "FEN", fen
-	rochade = '-' # 'KQkq'
+	castle = config.castle
 
 	if color is None:
 		# Try to detect color of last move. f contains the target field of enemys last move
@@ -38,7 +37,6 @@ def parsePngFile(file, color):
 		#print center
 		lastMove = transformCoordinatesToField(b, 1.0, [center])[0]
 		#print "last move", lastMove
-		pos = tools.parseFEN(fen + ' w ' + rochade + ' - 0 1')
 		index = (8-lastMove[1])*8+lastMove[0]-1
 		#print "index", index
 		target = boardArr[index]
@@ -48,8 +46,10 @@ def parsePngFile(file, color):
 		else:
 			color = 'w'
 		#print "color", color
-
-	pos = tools.parseFEN(fen + ' ' + color + ' ' + rochade + ' - 0 1')
+	
+	fen = fen + ' ' + color + ' ' + castle + ' - 0 1'
+	print "FEN", fen
+	pos = tools.parseFEN(fen)
 	print "Detected board: (" + color + ')'
 	print(' '.join(pos.board))
 
@@ -80,10 +80,12 @@ if __name__ == '__main__':
 	parser.add_argument('-v','--verbose', help='increase output verbosity and saving of status images', action='store_true')
 	parser.add_argument('--show_move', dest='show_move', help='show best move window (default)', action='store_true')
 	parser.add_argument('--hide_move', dest='show_move', help='hide best move window', action='store_false')
+	parser.add_argument('--castle', help='castling possibilities (default: -)', required=False, choices=['KQkq','Kkq','Qkq','kq','KQk','Kk','Qk','k','KQq','Kq','Qq','q','-'], default='-')
 	parser.set_defaults(show_move=True)	
 	
 	args = parser.parse_args()
 	config.verbosity = args.verbose
 	config.show_move = args.show_move
 	config.time = args.time
+	config.castle = args.castle
 	parsePngFile(args.file, args.color)
