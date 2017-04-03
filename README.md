@@ -20,7 +20,7 @@ optional arguments:
   -v, --verbose         increase output verbosity and saving of status images
   --show_move           show best move window (default)
   --hide_move           hide best move window
-  --castle {KQkq,Kkq,Qkq,kq,KQk,Kk,Qk,k,KQq,Kq,Qq,q,K,Q,-}
+  --castle {KQkq,Kkq,Qkq,kq,KQk,Kk,Qk,k,KQq,Kq,Qq,q,K,Q,KQ,-}
                         castling possibilities (default: -)
 
 ```
