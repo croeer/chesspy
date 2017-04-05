@@ -72,6 +72,17 @@ def parsePngFile(file, color):
 		cv2.imshow("Suggested move", img_board_color_scaled)
 		cv2.waitKey(0)
 	
+	for i in range(config.additional_moves):
+		pos = pos.move(move)
+		move, score = searcher.search(pos, secs=config.time)
+		if (color == 'b'):
+			color = 'w'
+		else:
+			color = 'b'
+		move = move if color == 'w' else (119-move[0], 119-move[1])
+		print "Suggested move (score):", sunfish.render(move[0]) + sunfish.render(move[1]), score
+	
+	
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('file', help='png image filename to parse')
@@ -81,6 +92,7 @@ if __name__ == '__main__':
 	parser.add_argument('--show_move', dest='show_move', help='show best move window (default)', action='store_true')
 	parser.add_argument('--hide_move', dest='show_move', help='hide best move window', action='store_false')
 	parser.add_argument('--castle', help='castling possibilities (default: -)', required=False, choices=['KQkq','Kkq','Qkq','kq','KQk','Kk','Qk','k','KQq','Kq','Qq','q','K','Q','KQ','-'], default='-')
+	parser.add_argument('-a','--additional_moves', help='number of additional moves to calculate', type=int, default=0)
 	parser.set_defaults(show_move=True)	
 	
 	args = parser.parse_args()
@@ -88,4 +100,5 @@ if __name__ == '__main__':
 	config.show_move = args.show_move
 	config.time = args.time
 	config.castle = args.castle
+	config.additional_moves = args.additional_moves
 	parsePngFile(args.file, args.color)
