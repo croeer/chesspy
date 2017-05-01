@@ -58,6 +58,9 @@ c:\dev\chesspy>
 ```
 ![Example screenshot](/screenshots/output.png?raw=true "Example Screenshot")
 
+## Server mode
+Using the http-server `server.py`, a webservice will listen at the configured port. Images can be transferred via `POST` request, which will be parsed, analyzed and the result will be printed back to the client.
+
 ## Dependencies
 
 Using http://opencv.org/ to detect the pieces and [Sunfish](https://github.com/thomasahle/sunfish) python chess engine to analyse the board and predict the next move.
