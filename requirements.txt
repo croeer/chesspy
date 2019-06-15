@@ -1,0 +1,8 @@
+Flask
+gunicorn
+argparse
+imutils
+config
+opencv-python
+numpy
+jsonpickle

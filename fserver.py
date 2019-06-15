@@ -20,12 +20,14 @@ def test():
     #convert string data to numpy array
     npimg = np.fromstring(filestr, np.uint8)
     # convert numpy array to image
-    img = cv2.imdecode(npimg, cv2.CV_LOAD_IMAGE_UNCHANGED)
+    img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
     cv2.imwrite("uploaded.png", img)
-    move = parseImg(img, None)
+    fen,move = parseImg(img, None)
 
     # build a response dict to send back to client
-    response = {'message': 'image received. size={}x{}'.format(img.shape[1], img.shape[0]) + '\n' + move}
+    response = {'message': 'image received. size={}x{}'.format(img.shape[1], img.shape[0]),
+    'fen': fen,
+    'move': move}
     # encode response using jsonpickle
     response_pickled = jsonpickle.encode(response)
 

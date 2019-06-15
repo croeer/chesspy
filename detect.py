@@ -17,6 +17,7 @@ def parsePngFile(file, color):
 	parseImg(img_rgb, color)
 
 def parseImg(img_rgb, color):
+	config.show_move = False
 	img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
 	img_masked,b = getBoard(img_gray)
@@ -59,7 +60,8 @@ def parseImg(img_rgb, color):
 	searcher = sunfish.Searcher()
 	move, score = searcher.search(pos, secs=config.time)
 	move = move if color == 'w' else (119-move[0], 119-move[1])
-	print "Suggested move (score):", sunfish.render(move[0]) + sunfish.render(move[1]), score
+	suggestedMove = sunfish.render(move[0]) + sunfish.render(move[1])
+	print "Suggested move (score):", suggestedMove, score
 
 	# draw arrow for suggested move
 	cv2.arrowedLine(img_rgb,pointInGlobalCoordinates(b,move[0]),pointInGlobalCoordinates(b,move[1]),(0,0,255),5)
@@ -75,6 +77,8 @@ def parseImg(img_rgb, color):
 		cv2.imshow("Suggested move", img_board_color_scaled)
 		cv2.waitKey(0)
 	
+	return fen, suggestedMove
+
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('file', help='png image filename to parse')
