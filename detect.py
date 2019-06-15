@@ -14,6 +14,9 @@ import config
 def parsePngFile(file, color):
 	print "Parsing file", file, color
 	img_rgb = cv2.imread(file)
+	parseImg(img_rgb, color)
+
+def parseImg(img_rgb, color):
 	img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
 	img_masked,b = getBoard(img_gray)
