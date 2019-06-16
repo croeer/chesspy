@@ -3,7 +3,7 @@ FROM python:2.7
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY color.py detect.py functions.py fserver.py ./
+COPY color.py detect.py functions.py fserver.py config.py ./
 COPY templates ./templates/
 COPY packages ./packages/
 
