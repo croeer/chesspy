@@ -26,9 +26,10 @@ def getTargetField( img_board ):
 
 def detectTargetField( img_rgb):
     lower = np.array([250, 120, 80], dtype="uint8")
-    upper = np.array([255, 130, 90], dtype="uint8")
+    upper = np.array([255, 135, 90], dtype="uint8")
 
     mask = cv2.inRange(img_rgb, lower, upper)
+    #cv2.imwrite('mask.png',mask)
     output = cv2.bitwise_and(img_rgb, img_rgb, mask = mask)
 
     return getTargetField( output )
