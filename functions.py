@@ -48,6 +48,9 @@ def getPositionsByTemplateMatching( filename, img, threshold ):
 
 def getBoard( img ):
     ret,thresh = cv2.threshold(img,127,255,0)
+    if (config.verbosity):
+        cv2.imwrite('thresh.png', thresh)
+
     contours, _ = cv2.findContours(thresh,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
     #print 'Found %d contours' % (len(contours))
     # find board
@@ -153,3 +156,13 @@ def setupBoard( board, img ):
         fen = fen.replace('o'*k, str(k))
         
     return fen, boardL
+
+def reverse_fen(fen):
+    arr = fen.split('/')
+    reversedFen = ''
+    for i in reversed(arr):
+        if reversedFen != '':
+            reversedFen += '/'
+        reversedFen += i[::-1].swapcase()
+
+    return reversedFen 
