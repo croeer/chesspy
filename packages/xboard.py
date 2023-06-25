@@ -1,17 +1,17 @@
 #!/usr/bin/env pypy -u
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from __future__ import division
+
+
 import importlib
 import re
 import sys
 import time
 
-import tools
-import sunfish
+from . import tools
+from . import sunfish
 
-from tools import WHITE, BLACK
+from .tools import WHITE, BLACK
 
 if len(sys.argv) > 1:
     sunfish = importlib.import_module(sys.argv[1])
@@ -43,7 +43,7 @@ def main():
     while True:
         if stack:
             smove = stack.pop()
-        else: smove = input()
+        else: smove = eval(input())
 
         if smove == 'quit':
             break

@@ -1,7 +1,7 @@
 import itertools
 import re
 
-import sunfish
+from . import sunfish
 
 ################################################################################
 # This module contains functions used by test.py and xboard.py.
@@ -10,7 +10,7 @@ import sunfish
 
 # Sunfish doesn't have to know about colors, but for more advanced things, such
 # as xboard support, we have to.
-WHITE, BLACK = range(2)
+WHITE, BLACK = list(range(2))
 
 FEN_INITIAL = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 

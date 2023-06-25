@@ -1,7 +1,7 @@
 #!/usr/bin/env pypy
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+
 import os
 import re
 import sys
@@ -16,8 +16,8 @@ import random
 import unittest
 import warnings
 
-import sunfish
-import tools
+from . import sunfish
+from . import tools
 
 ###############################################################################
 # Playing test

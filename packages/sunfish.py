@@ -1,7 +1,7 @@
 #!/usr/bin/env pypy
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+
 import re, sys, time
 from itertools import count
 from collections import OrderedDict, namedtuple
@@ -62,7 +62,7 @@ pst = {
             17,  30,  -3, -14,   6,  -1,  40,  18),
 }
 # Pad tables and join piece and pst dictionaries
-for k, table in pst.items():
+for k, table in list(pst.items()):
     padrow = lambda row: (0,) + tuple(x+piece[k] for x in row) + (0,)
     pst[k] = sum((padrow(table[i*8:i*8+8]) for i in range(8)), ())
     pst[k] = (0,)*20 + pst[k] + (0,)*20
@@ -420,7 +420,7 @@ def main():
         # We query the user until she enters a (pseudo) legal move.
         move = None
         while move not in pos.gen_moves():
-            match = re.match('([a-h][1-8])'*2, input('Your move: '))
+            match = re.match('([a-h][1-8])'*2, eval(input('Your move: ')))
             if match:
                 move = parse(match.group(1)), parse(match.group(2))
             else:

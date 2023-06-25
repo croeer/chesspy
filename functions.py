@@ -12,7 +12,7 @@ import config
 
 def getPositionsByTemplateMatching( filename, img, threshold ):
     if (config.verbosity):
-        print "matching", filename
+        print("matching", filename)
     ret=[]
     template = cv2.imread(filename,0)
     w, h = template.shape[::-1]
@@ -140,10 +140,10 @@ def setupBoard( board, img ):
     blackQueens = transformCoordinatesToField(board, f, bq)
 
     boardL = ['o']*64
-    for k,v in {'P':whitePawns,'R':whiteRooks,'N':whiteKnights,'B':whiteBishops,'K':whiteKing,'Q':whiteQueens}.iteritems():
+    for k,v in {'P':whitePawns,'R':whiteRooks,'N':whiteKnights,'B':whiteBishops,'K':whiteKing,'Q':whiteQueens}.items():
         replaceFig(k,v,boardL)
     
-    for k,v in {'p':blackPawns,'r':blackRooks,'n':blackKnights,'b':blackBishops,'k':blackKing,'q':blackQueens}.iteritems():
+    for k,v in {'p':blackPawns,'r':blackRooks,'n':blackKnights,'b':blackBishops,'k':blackKing,'q':blackQueens}.items():
         replaceFig(k,v,boardL)
     
     
