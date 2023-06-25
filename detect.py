@@ -18,7 +18,6 @@ def parsePngFile(file, color):
 	parseImg(img_rgb, color)
 
 def parseImg(img_rgb, color):
-	config.show_move = False
 	img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
 	img_masked,b = getBoard(img_gray)
@@ -70,7 +69,6 @@ def parseImg(img_rgb, color):
 	cv2.arrowedLine(img_rgb,pointInGlobalCoordinates(b,move[0]),pointInGlobalCoordinates(b,move[1]),(0,0,255),5)
 	cv2.imwrite('output.png', img_rgb)
 	
-	cv2.arrowedLine(img_board_color,pointInGlobalCoordinates(b,move[0]),pointInGlobalCoordinates(b,move[1]),(0,0,255),5)
 	img_board_color_scaled = imutils.resize(img_board_color, width = 200)
 	
 	if (config.verbosity):	
@@ -79,6 +77,7 @@ def parseImg(img_rgb, color):
 	if (config.show_move):
 		cv2.imshow("Suggested move", img_board_color_scaled)
 		cv2.waitKey(0)
+		cv2.destroyAllWindows()
 	
 	return fen, suggestedMove
 
