@@ -102,7 +102,9 @@ def pointInGlobalCoordinates( board, field ):
     binSizeY = board[3]//8
     p0 = p0 + binSizeX*fil + binSizeX/2
     p1 = p1 + binSizeY*(8+rank-1) + binSizeY/2
-    return (p0,p1) 
+    if (config.verbosity):
+        print(f"{field}: {p0},{p1}")
+    return (int(p0),int(p1)) 
 
 def replaceFig( key, pieces, boardL ):
     for p in pieces:
