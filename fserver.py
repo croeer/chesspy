@@ -12,7 +12,7 @@ app = Flask(__name__)
 # route http posts to this method
 @app.route('/api/test', methods=['POST'])
 def test():
-    print request.headers
+    print(request.headers)
     #data = request.files['file']
     #img = cv2.imread(data)
     #read image file string data

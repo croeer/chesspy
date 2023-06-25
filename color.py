@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
     img_masked,b = detectTargetField( img )
 
-    print b
+    print(b)
     img_field = img[ b[1]:b[1]+b[3] , b[0]:b[0]+b[2] ]
     cv2.imshow("detected target field", img_field)
     cv2.waitKey(0)

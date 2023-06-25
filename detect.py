@@ -13,7 +13,7 @@ import config
 import time
 
 def parsePngFile(file, color):
-	print "Parsing file", file, color
+	print("Parsing file", file, color)
 	img_rgb = cv2.imread(file)
 	parseImg(img_rgb, color)
 
@@ -53,18 +53,18 @@ def parseImg(img_rgb, color):
 		#print "color", color
 	
 	fen = fen + ' ' + color + ' ' + castle + ' - 0 1'
-	print "FEN", fen
+	print("FEN", fen)
 	pos = tools.parseFEN(fen)
-	print "Detected board: (" + color + ')'
-	print(' '.join(pos.board))
+	print("Detected board: (" + color + ')')
+	print((' '.join(pos.board)))
 
 	searcher = sunfish.Searcher()
-	print time.asctime(), "sunfish search", config.time
+	print(time.asctime(), "sunfish search", config.time)
 	move, score = searcher.search(pos, secs=config.time)
-	print time.asctime(), "sunfish search complete"
+	print(time.asctime(), "sunfish search complete")
 	move = move if color == 'w' else (119-move[0], 119-move[1])
 	suggestedMove = sunfish.render(move[0]) + sunfish.render(move[1])
-	print "Suggested move (score):", suggestedMove, score
+	print("Suggested move (score):", suggestedMove, score)
 
 	# draw arrow for suggested move
 	cv2.arrowedLine(img_rgb,pointInGlobalCoordinates(b,move[0]),pointInGlobalCoordinates(b,move[1]),(0,0,255),5)

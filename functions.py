@@ -12,7 +12,7 @@ import config
 
 def getPositionsByTemplateMatching( filename, img, threshold ):
     if (config.verbosity):
-        print "matching", filename
+        print("matching", filename)
     ret=[]
     template = cv2.imread(filename,0)
     w, h = template.shape[::-1]
@@ -102,7 +102,9 @@ def pointInGlobalCoordinates( board, field ):
     binSizeY = board[3]//8
     p0 = p0 + binSizeX*fil + binSizeX/2
     p1 = p1 + binSizeY*(8+rank-1) + binSizeY/2
-    return (p0,p1) 
+    if (config.verbosity):
+        print(f"{field}: {p0},{p1}")
+    return (int(p0),int(p1)) 
 
 def replaceFig( key, pieces, boardL ):
     for p in pieces:
@@ -140,10 +142,10 @@ def setupBoard( board, img ):
     blackQueens = transformCoordinatesToField(board, f, bq)
 
     boardL = ['o']*64
-    for k,v in {'P':whitePawns,'R':whiteRooks,'N':whiteKnights,'B':whiteBishops,'K':whiteKing,'Q':whiteQueens}.iteritems():
+    for k,v in {'P':whitePawns,'R':whiteRooks,'N':whiteKnights,'B':whiteBishops,'K':whiteKing,'Q':whiteQueens}.items():
         replaceFig(k,v,boardL)
     
-    for k,v in {'p':blackPawns,'r':blackRooks,'n':blackKnights,'b':blackBishops,'k':blackKing,'q':blackQueens}.iteritems():
+    for k,v in {'p':blackPawns,'r':blackRooks,'n':blackKnights,'b':blackBishops,'k':blackKing,'q':blackQueens}.items():
         replaceFig(k,v,boardL)
     
     
